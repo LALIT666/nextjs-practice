@@ -11,6 +11,8 @@ export default function ClickCounter() {
     <div>
       <p>Count: {count}</p>
       <button onClick={() => setCount(prevCount => prevCount + 1)}>Increase</button>
+      
+      <button onClick={()=> setCount(0)}>Reset</button>
     </div>
   )
 
