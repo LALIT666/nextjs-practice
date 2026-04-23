@@ -1,3 +1,4 @@
+import ClickCounter from "./ClickCounter";
 import PracticeCard from "./PracticeCard";
 
 type PracticeTopic = {
@@ -24,6 +25,11 @@ export default function Practice() {
           description={topic.description}
         />
       ))}
+      
+      <br />
+      <br />
+      
+      <ClickCounter/>
     </div>
   );
 }
