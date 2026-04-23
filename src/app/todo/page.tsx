@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import TodoItem from "./TodoItem";
+import TodoInput from "./TodoInput";
 
 type Todo = {
   id: number;
@@ -12,6 +14,10 @@ export default function Todo() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const [inputValue, setInputValue] = useState("");
+
+  const completedTodosCount: number = todos.filter(
+    (todo) => todo.completed,
+  ).length;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value);
@@ -47,29 +53,29 @@ export default function Todo() {
   return (
     <div>
       <h1>My Todo App</h1>
+      <h2>Total Todos: {todos.length}</h2>
+      <h2>Completed Todos: {completedTodosCount}</h2>
 
-      <input
-        type="text"
-        placeholder="Add your to do"
-        value={inputValue}
+      <TodoInput
+        inputValue={inputValue}
         onChange={handleChange}
+        onAdd={handleAddTodo}
       />
-      <p>Input: {inputValue}</p>
-      <p>Total Todos: {todos.length}</p>
-      <button onClick={handleAddTodo}>Add</button>
 
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <span style={{ color: todo.completed ? "green" : "red" }}>
-              Todo: {todo.text}
-            </span>
-            , Status: {todo.completed ? "Completed" : "Not Completed"}
-            <button onClick={() => handleToggleTodo(todo.id)}>Toggle</button>
-            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {todos.length === 0 ? (
+        <p>No todos yet</p>
+      ) : (
+        <ul>
+          {todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={handleToggleTodo}
+              onDelete={handleDeleteTodo}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
