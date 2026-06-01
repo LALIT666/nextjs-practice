@@ -4,29 +4,29 @@ import React, { useState } from "react";
 
 export default function FormMuscelMemory() {
   const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSumit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (!name.trim()) {
-      setError("Name is required");
-      return;
-    }
+    setLoading(true);
 
-    setError("");
-    console.log("VAILD: ", name);
+    await new Promise((r) => setTimeout(r, 2000));
+
+    console.log("Done name: ", name);
+    setLoading(false);
   };
 
   return (
-    <form onSubmit={handleSumit}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button type="submit">Submit</button>
-      <p>Name: {name}</p>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button disabled={loading}>
+        {" "}
+        {loading ? "Submitting...." : "Submit"}
+      </button>
     </form>
   );
 }
