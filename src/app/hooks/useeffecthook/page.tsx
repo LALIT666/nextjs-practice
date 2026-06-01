@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+//runs on every render
 
 export default function HomeHooks() {
-  useEffect(() => {
-    alert("COMPONENT MOUNTED ✅");
-  }, []);
+  const [count, setCount] = useState(0);
 
-  return <h1>Hello UseEffect</h1>;
+  useEffect(() => {
+    alert(`Rendere, count: ${count} `);
+  });
+
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
 }
