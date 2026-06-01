@@ -1,15 +1,21 @@
 "use server";
 
-type formState = {
+type FormState = {
   error: string;
   success?: boolean;
 };
-export async function submitForms(prevState: formState, formData: FormData) {
+export async function creatingUser(prevState: FormState, formData: FormData) {
   const name = formData.get("name")?.toString() || "";
+  const email = formData.get("email")?.toString() || "";
+
   if (!name.trim()) {
     return { error: "Name is Required" };
   }
 
-  console.log("name is : ", name);
-  return { error: "", success: true };
+  if (!email.includes("@")) {
+    return { error: "Invalid email" };
+  }
+
+  console.log(`name: ${name} and email: ${email}`);
+  return { error: "", success: true, name, email };
 }
