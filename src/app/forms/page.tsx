@@ -2,42 +2,31 @@
 
 import React, { useState } from "react";
 
-interface InputObj {
-  name: string;
-  email: string;
-}
-
 export default function FormMuscelMemory() {
-  //"2nd time" multiple inputs
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
-  const [form, setForm] = useState({ name: "", email: "" });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSumit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    console.log(form);
+    if (!name.trim()) {
+      setError("Name is required");
+      return;
+    }
+
+    setError("");
+    console.log("VAILD: ", name);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSumit}>
       <input
         type="text"
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-        placeholder="joe doe"
-      />
-      <input
-        type="text"
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-        placeholder="joedoe@gmail.com"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <button type="submit">Submit</button>
+      <p>Name: {name}</p>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 }
