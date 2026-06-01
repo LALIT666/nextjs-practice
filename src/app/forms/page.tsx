@@ -1,21 +1,20 @@
+"use client";
+
+import { useActionState } from "react";
+import { submitForms } from "./actions";
+
 export default function HomeForm() {
-  async function handleSubmit(formData: FormData) {
-    "use server";
-
-    const name = formData.get("name") as string;
-
-    if (!name || !name.trim()) {
-      console.log("Error: name is required");
-      return;
-    }
-
-    console.log("name is: ", name);
-  }
+  const [state, actionFun, pending] = useActionState(submitForms, {
+    error: "",
+  });
 
   return (
-    <form action={handleSubmit}>
+    <form action={actionFun}>
       <input type="text" name="name" />
-      <button type="submit">Submit</button>
+      {state.error && <p style={{ color: "red" }}>{state.error}</p>}
+      {state.success && <p style={{ color: "green" }}>Form submitted!</p>}
+
+      <button disabled={pending}>{pending ? "Submitting..." : "Submit"}</button>
     </form>
   );
 }
