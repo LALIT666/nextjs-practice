@@ -1,32 +1,14 @@
-"use client";
-
-import React, { useState } from "react";
-
-export default function FormMuscelMemory() {
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    await new Promise((r) => setTimeout(r, 2000));
-
-    console.log("Done name: ", name);
-    setLoading(false);
-  };
+export default function HomeForm() {
+  async function handleSubmit(formData: FormData) {
+    "use server";
+    const name = formData.get("name");
+    console.log("name is: ", name);
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button disabled={loading}>
-        {" "}
-        {loading ? "Submitting...." : "Submit"}
-      </button>
+    <form action={handleSubmit}>
+      <input type="text" name="name" />
+      <button type="submit">Submit</button>
     </form>
   );
 }
