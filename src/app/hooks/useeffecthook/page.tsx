@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 
-//runs when counts change
+//clean up function
 
 export default function HomeHooks() {
-  const [count, setCount] = useState(0);
+  const [time, setTime] = useState(0);
 
   useEffect(() => {
-    alert(`Rendere, count: ${count} `);
-  }, [count]);
+    const id = setInterval(() => {
+      setTime((t) => t + 1);
+    }, 1000);
 
-  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+    return () => clearInterval(id);
+  }, []);
+
+  return <h1>Timer this : {time}</h1>;
 }
