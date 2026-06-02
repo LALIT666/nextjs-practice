@@ -6,19 +6,27 @@ import { useEffect, useState } from "react";
 //clean up function
 
 export default function HomeHooks() {
-  const [title, setTitle] = useState("");
+  const [fact, setFact] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const loadTitle = async () => {
-      const res = await axios.get(
-        "https://jsonplaceholder.typicode.com/todos/2",
-      );
-
-      setTitle(res.data.title);
+    const loadFact = async () => {
+      try {
+        const res = await axios.get("https://catfact.ninja/fact");
+        setFact(res.data.fact);
+      } catch {
+        setError("Error in loading fact");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    loadTitle();
+    loadFact();
   }, []);
 
-  return <h1>Title: {title}</h1>;
+  if (loading) <p>Loading....</p>;
+  if (error) <p>{error}</p>;
+
+  return <p>fact: {fact}</p>;
 }
