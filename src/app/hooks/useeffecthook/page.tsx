@@ -3,30 +3,29 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-//clean up function
-
 export default function HomeHooks() {
-  const [fact, setFact] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [userId, setUserId] = useState(1);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const loadFact = async () => {
+    const loadUser = async () => {
       try {
-        const res = await axios.get("https://catfact.ninja/fact");
-        setFact(res.data.fact);
+        const res = await axios.get(
+          `https://jsonplaceholder.typicode.com/users/${userId}`,
+        );
+        setUser(res.data);
       } catch {
-        setError("Error in loading fact");
-      } finally {
-        setLoading(false);
+        console.log("Error in loadUser");
       }
     };
 
-    loadFact();
-  }, []);
+    loadUser();
+  }, [userId]);
 
-  if (loading) <p>Loading....</p>;
-  if (error) <p>{error}</p>;
-
-  return <p>fact: {fact}</p>;
+  return (
+    <div>
+      <button onClick={() => setUserId(userId + 1)}>Next User</button>
+      <p>{user?.name}</p>
+    </div>
+  );
 }
