@@ -4,28 +4,36 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function HomeHooks() {
-  const [userId, setUserId] = useState(1);
-  const [user, setUser] = useState<any>(null);
+  const [post, setPost] = useState<any>(null);
+
+  const [postId, setPostId] = useState(1);
 
   useEffect(() => {
-    const loadUser = async () => {
+    const loadPost = async () => {
       try {
         const res = await axios.get(
-          `https://jsonplaceholder.typicode.com/users/${userId}`,
+          `https://jsonplaceholder.typicode.com/posts/${postId}`,
         );
-        setUser(res.data);
-      } catch {
-        console.log("Error in loadUser");
+
+        setPost(res.data);
+      } catch (error) {
+        console.error("Error in loading post", error);
       }
     };
 
-    loadUser();
-  }, [userId]);
+    loadPost();
+  }, [postId]);
 
   return (
     <div>
-      <button onClick={() => setUserId(userId + 1)}>Next User</button>
-      <p>{user?.name}</p>
+      <input
+        type="number"
+        value={postId}
+        onChange={(e) => setPostId(Number(e.target.value))}
+        placeholder="wrtie a number here like 1 or 2 "
+      />
+
+      <p>{post?.title}</p>
     </div>
   );
 }
