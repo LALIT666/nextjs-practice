@@ -1,19 +1,24 @@
 "use client";
 
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 //clean up function
 
 export default function HomeHooks() {
-  const [time, setTime] = useState(0);
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setTime((t) => t + 1);
-    }, 1000);
+    const loadTitle = async () => {
+      const res = await axios.get(
+        "https://jsonplaceholder.typicode.com/todos/2",
+      );
 
-    return () => clearInterval(id);
+      setTitle(res.data.title);
+    };
+
+    loadTitle();
   }, []);
 
-  return <h1>Timer this : {time}</h1>;
+  return <h1>Title: {title}</h1>;
 }
