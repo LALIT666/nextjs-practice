@@ -1,18 +1,20 @@
+// ! 🟢 DRILL 10: Window Resize Listener
+
 "use client";
 
 import { useEffect, useState } from "react";
 
 export default function HomeHooks() {
-  const [name, setName] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem("name") ?? "";
-  });
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    localStorage.setItem("name", name);
-  }, [name]);
+    const handleResize = () => setWidth(window.innerWidth);
 
-  return (
-    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-  );
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return <p>Width: {width}</p>;
 }
