@@ -10,7 +10,7 @@ export function useCounter(initialCount = 0) {
     setCount((prevCount) => prevCount - 1);
   }, []);
   const reset = useCallback(() => {
-    setCount((prevCount) => initialCount);
+    setCount(initialCount);
   }, [initialCount]);
 
   return { count, inc, dec, reset };
