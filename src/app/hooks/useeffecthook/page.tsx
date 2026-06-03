@@ -1,20 +1,29 @@
-// ! 🟢 DRILL 10: Window Resize Listener
+// 🟢 DRILL 11: Interval Start/Stop
 
 "use client";
 
 import { useEffect, useState } from "react";
 
-export default function HomeHooks() {
-  const [width, setWidth] = useState(0);
+export default function HomeHook() {
+  const [time, setTime] = useState(0);
+  const [running, setRunning] = useState(true);
 
   useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
+    if (!running) return;
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    const id = setInterval(() => {
+      setTime((prevTime) => prevTime + 1);
+    }, 100);
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => clearInterval(id);
+  }, [running]);
 
-  return <p>Width: {width}</p>;
+  return (
+    <div>
+      <p>Time: {time}</p>
+      <button onClick={() => setRunning(!running)}>
+        {running ? "STOP" : "START"}
+      </button>
+    </div>
+  );
 }
